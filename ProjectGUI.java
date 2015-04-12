@@ -163,6 +163,7 @@ public class ProjectGUI extends JFrame implements ActionListener {
 	 */
 	private CreateGUI newProject;
 	private JButton[] projects = new JButton[100];
+	private JLabel[][] labels = new JLabel[100][5];
 	private JButton[] completed = new JButton[100];
 	private ArrayList<Project> temp;
 	private int number = 0;
@@ -289,6 +290,51 @@ public class ProjectGUI extends JFrame implements ActionListener {
 				model.sortByName();
 			}
 		}
+		
+		if(e.getActionCommand().equals(String.valueOf(0))){
+			edit(0);
+		}else if(e.getActionCommand().equals(String.valueOf(1))){
+			edit(1);
+		}else if(e.getActionCommand().equals(String.valueOf(2))){
+			edit(2);
+		}else if(e.getActionCommand().equals(String.valueOf(3))){
+			edit(3);
+		}else if(e.getActionCommand().equals(String.valueOf(4))){
+			edit(4);
+		}else if(e.getActionCommand().equals(String.valueOf(5))){
+			edit(5);
+		}else if(e.getActionCommand().equals(String.valueOf(6))){
+			edit(6);
+		}else if(e.getActionCommand().equals(String.valueOf(7))){
+			edit(7);
+		}else if(e.getActionCommand().equals(String.valueOf(8))){
+			edit(8);
+		}else if(e.getActionCommand().equals(String.valueOf(9))){
+			edit(9);
+		}else if(e.getActionCommand().equals(String.valueOf(10))){
+			edit(10);
+		}else if(e.getActionCommand().equals(String.valueOf(11))){
+			edit(11);
+		}else if(e.getActionCommand().equals(String.valueOf(12))){
+			edit(12);
+		}else if(e.getActionCommand().equals(String.valueOf(13))){
+			edit(13);
+		}else if(e.getActionCommand().equals(String.valueOf(14))){
+			edit(14);
+		}else if(e.getActionCommand().equals(String.valueOf(15))){
+			edit(15);
+		}else if(e.getActionCommand().equals(String.valueOf(16))){
+			edit(16);
+		}else if(e.getActionCommand().equals(String.valueOf(17))){
+			edit(17);
+		}else if(e.getActionCommand().equals(String.valueOf(18))){
+			edit(18);
+		}else if(e.getActionCommand().equals(String.valueOf(19))){
+			edit(19);
+		}else if(e.getActionCommand().equals(String.valueOf(20))){
+			edit(20);
+		}
+		
 		if (e.getSource() == deleteItem) {
 //			int index = table.getSelectedRow();
 //			if (index != -1) {
@@ -418,38 +464,30 @@ public class ProjectGUI extends JFrame implements ActionListener {
 	public void addingProject(String n, String s, GregorianCalendar d, 
 			int r, String notes){
 		
-		centralPanel = new JPanel(new GridLayout(1,10));
 		projects[number] = new JButton();
-		//projects[number].setActionCommand(""+number);
-		projects[number].addActionListener(
-				new ActionListener(){
-					@Override
-					public void actionPerformed(ActionEvent event){
-						System.out.println("x");
-						edit(number);
-					}
-				});
+		projects[number].setActionCommand(String.valueOf(number));
+		projects[number].addActionListener(this);
 		projects[number].setLayout(new GridLayout(1,5));
 		//now.setSize(5,950);
 		//now.setText("");
-		one = new JLabel(n);
-		one.setHorizontalAlignment(SwingConstants.CENTER);
-		two = new JLabel(s);
-		two.setHorizontalAlignment(SwingConstants.CENTER);
-		three = new JLabel(Utilities.gToString(d));
-		three.setSize(three.getPreferredSize());
-		three.setHorizontalAlignment(SwingConstants.CENTER);
-		four = new JLabel(String.valueOf(r));
-		four.setSize(four.getPreferredSize());
-		four.setHorizontalAlignment(SwingConstants.CENTER);
-		five = new JLabel(notes);
-		five.setHorizontalAlignment(SwingConstants.CENTER);
+		labels[number][0] = new JLabel(n);
+		labels[number][0].setHorizontalAlignment(SwingConstants.CENTER);
+		labels[number][1] = new JLabel(s);
+		labels[number][1].setHorizontalAlignment(SwingConstants.CENTER);
+		labels[number][2] = new JLabel(Utilities.gToString(d));
+		labels[number][2].setSize(labels[number][2].getPreferredSize());
+		labels[number][2].setHorizontalAlignment(SwingConstants.CENTER);
+		labels[number][3] = new JLabel(String.valueOf(r));
+		labels[number][3].setSize(labels[number][3].getPreferredSize());
+		labels[number][3].setHorizontalAlignment(SwingConstants.CENTER);
+		labels[number][4] = new JLabel(notes);
+		labels[number][4].setHorizontalAlignment(SwingConstants.CENTER);
 		
-		projects[number].add(one);
-		projects[number].add(two);
-		projects[number].add(three);
-		projects[number].add(four);
-		projects[number].add(five);
+		projects[number].add(labels[number][0]);
+		projects[number].add(labels[number][1]);
+		projects[number].add(labels[number][2]);
+		projects[number].add(labels[number][3]);
+		projects[number].add(labels[number][4]);
 		
 		int temp = number;
 		number++;
@@ -465,50 +503,36 @@ public class ProjectGUI extends JFrame implements ActionListener {
 
 	public void edit(int i){
 		newProject = new CreateGUI(this, 
-				model.get(i).getName(), 
-				model.get(i).getSubName(),
-				model.get(i).getDueDate(), 
-				model.get(i).getReminder(),
-				model.get(i).getNotes());
+				labels[i][0].getText(), 
+				labels[i][1].getText(),
+				Utilities.strToGregCalendar(labels[i][2].getText()), 
+				Integer.parseInt(labels[i][3].getText()),
+				labels[i][4].getText());
 		//model.remove(model.get(index));
 
 		if (newProject.isOkPressed()) {
 			if(newProject.getName() != model.get(i).getName()){
-				one.setText(newProject.getName());
+				labels[i][0].setText(newProject.getName());
 				model.upDate(model.get(i).getName(), 
 						newProject.getName());
 			}
 			if(newProject.getSub() != model.get(i).getSubName()){
-				two.setText(newProject.getSub());
+				labels[i][1].setText(newProject.getSub());
 				model.get(i).setSubName(newProject.getName());
 			}
 			if(newProject.getDueDate() != model.get(i).getDueDate()){
-				three.setText(Utilities.gToString(newProject.getDueDate()));
+				labels[i][2].setText(Utilities.gToString(newProject.getDueDate()));
 				model.get(i).setDueDate(newProject.getDueDate());
 			}
 			if(newProject.getReminder() != model.get(i).getReminder()){
-				four.setText(String.valueOf(newProject.getReminder()));
+				labels[i][3].setText(String.valueOf(newProject.getReminder()));
 				model.get(i).setReminder(newProject.getReminder());
 			}
 			if(newProject.getNotes() != model.get(i).getNotes()){
-				five.setText(newProject.getNotes());
+				labels[i][4].setText(newProject.getNotes());
 				model.get(i).setNotes(newProject.getNotes());
 			}
 
-			//Project s = new Project(newProject.getName(), 
-			//		newProject.getSub(), newProject.getDueDate(), 
-			//		newProject.getReminder(), newProject.getNotes(), 
-			//		false);
-
-			//model.remove(model.get(i));
-			//remove(i);
-			//model.add(s);
-			//addingProject(newProject.getName(), null, newProject.getDueDate(), 
-			//		newProject.getReminder(), newProject.getNotes());
-			//model.sortByName();
-			//}
-			//
-			//}
 		}
 	}
 	
