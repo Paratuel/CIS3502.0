@@ -503,11 +503,11 @@ public class ProjectGUI extends JFrame implements ActionListener {
 
 	public void edit(int i){
 		newProject = new CreateGUI(this, 
-				labels[i][0].getText(), 
-				labels[i][1].getText(),
-				Utilities.strToGregCalendar(labels[i][2].getText()), 
-				Integer.parseInt(labels[i][3].getText()),
-				labels[i][4].getText());
+			model.get(i).getName(), 
+			model.get(i).getSubName(),
+			model.get(i).getDueDate(), 
+			model.get(i).getReminder(),
+			model.get(i).getNotes());
 		//model.remove(model.get(index));
 
 		if (newProject.isOkPressed()) {
