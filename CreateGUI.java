@@ -1,5 +1,8 @@
 package CIS350;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,6 +17,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
@@ -27,12 +31,13 @@ public class CreateGUI extends JDialog implements ActionListener {
 	private int reminder;
 	private String notes;
 	private String notThis = "USED FOR SPLITTING PROJECT";
+	private JPanel northPanel, centralPanel, southPanel, verySouthPanel;
 	
 	private GridLayout layout;
 
 	private JButton okButton; 
 	private JButton cancelButton;
-	private JButton complete, delete;
+	private JButton complete, delete, sub;
 
 	private JLabel nameLabel;
 	private JLabel dateLabel;
@@ -55,7 +60,7 @@ public class CreateGUI extends JDialog implements ActionListener {
 
 	private boolean isOk, ok, cancel;
 	//private boolean cancel;
-	private boolean isSubOk, subUsed;
+	private boolean isSubOk, subUsed, isCompleteOk, isDeleteOk;
 	private ProjectGUI parent;
 
 	private Project aProject;
@@ -91,6 +96,8 @@ public class CreateGUI extends JDialog implements ActionListener {
 	
 	public void setupDialog(String a){
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		
+		northPanel = new JPanel(new GridLayout(7,2));
 		nameField = new JTextField(20);
 		dateField = new JTextField(10);
 		noteField = new JTextField(70);
@@ -99,7 +106,6 @@ public class CreateGUI extends JDialog implements ActionListener {
 		dateField.setText("10/10/2012");
 		noteField.setText("Take action NOW!");
 		reminderField.setText("0");
-		//subField.setText(notThis);
 		
 		isOk = false;
 		isSubOk = true;
@@ -107,70 +113,7 @@ public class CreateGUI extends JDialog implements ActionListener {
 		aProject = new Project();
 		
 		WIDTH = 400;
-		HEIGHT = 400;
-		layout = new GridLayout(7,2);
-		okButton = new JButton("OK");
-		okButton.addActionListener(this); 
-		cancelButton = new JButton("Cancel");
-		cancelButton.addActionListener(this);
-		nameLabel = new JLabel("Name of Project:");
-		dateLabel = new JLabel("Due date (MM/DD/YYYY):");
-		noteLabel = new JLabel("Notes:");
-		remLabel = new JLabel("Reminder (Days Needed):");
-		
-		if(a != null){
-			nameField.setText(projectName);
-			subField = new JTextField(3);
-			subField.setText(" ");
-			subLabel = new JLabel("Split Project");
-			add(nameLabel);
-			add(nameField);
-			add(subLabel);
-			add(subField);
-			subUsed = true;
-		}else{
-			nameField.setText("Math Homework");
-			//subField.setText(notThis);
-			add(nameLabel);
-			add(nameField);
-		}
-		
-		add(dateLabel);
-		add(dateField);
-		add(remLabel);
-		add(reminderField);
-		add(noteLabel);
-		add(noteField);
-		
-		add(cancelButton);
-		add(okButton);
-
-		setLayout(layout);
-		setSize(WIDTH, HEIGHT);
-		setLocationRelativeTo(null);
-		setVisible(true); 
-	}
-	
-	public void editDialog(String a, String b, GregorianCalendar c, int d, String e){
-		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-		nameField = new JTextField(20);
-		dateField = new JTextField(10);
-		noteField = new JTextField(70);
-		reminderField = new JTextField(20);
-		
-		dateField.setText(Utilities.gToString(c));
-		noteField.setText(e);
-		reminderField.setText(String.valueOf(d));
-
-		
-		isOk = false;
-		isSubOk = true;
-		format = DateFormat.getDateInstance(DateFormat.SHORT);
-		//aProject = new Project();
-		
-		WIDTH = 400;
-		HEIGHT = 400;
-		layout = new GridLayout(7,2);
+		HEIGHT = 200;
 		okButton = new JButton("OK");
 		okButton.addActionListener(this); 
 		cancelButton = new JButton("Cancel");
@@ -179,41 +122,124 @@ public class CreateGUI extends JDialog implements ActionListener {
 		delete.addActionListener(this);
 		complete = new JButton("Complete");
 		complete.addActionListener(this);
+		sub = new JButton("Split Project");
+		sub.addActionListener(this);
 		nameLabel = new JLabel("Name of Project:");
 		dateLabel = new JLabel("Due date (MM/DD/YYYY):");
 		noteLabel = new JLabel("Notes:");
+		
 		remLabel = new JLabel("Reminder (Days Needed):");
 		
-		if(b != null){
-			nameField.setText(a);
+		if(a != null){
+			nameField.setText(projectName);
 			subField = new JTextField(3);
-			subField.setText(b);
+			subField.setText(" ");
 			subLabel = new JLabel("Split Project");
-			add(nameLabel);
-			add(nameField);
-			add(subLabel);
-			add(subField);
+			northPanel.add(nameLabel);
+			northPanel.add(nameField);
+			northPanel.add(subLabel);
+			northPanel.add(subField);
 			subUsed = true;
 		}else{
-			nameField.setText(a);
-			//subField.setText(notThis);
-			add(nameLabel);
-			add(nameField);
+			nameField.setText("Math Homework");
+			northPanel.add(nameLabel);
+			northPanel.add(nameField);
 		}
 		
-		add(dateLabel);
-		add(dateField);
-		add(remLabel);
-		add(reminderField);
-		add(noteLabel);
-		add(noteField);
+		northPanel.add(dateLabel);
+		northPanel.add(dateField);
+		northPanel.add(remLabel);
+		northPanel.add(reminderField);
+		northPanel.add(noteLabel);
+		northPanel.add(noteField);
 		
-		add(delete);
-		add(complete);
-		add(cancelButton);
-		add(okButton);
+		centralPanel = new JPanel(new GridLayout(1,2));	
+		verySouthPanel = new JPanel(new GridLayout(1,1));
+				
+		northPanel.add(cancelButton);
+		northPanel.add(okButton);
+		
+		add(northPanel, BorderLayout.NORTH);
+		
+		setSize(WIDTH, HEIGHT);
+		setLocationRelativeTo(null);
+		setVisible(true); 
+	}
+	
+	public void editDialog(String a, String b, GregorianCalendar c, int d, String e){
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		northPanel = new JPanel(new GridLayout(7,2));
+		nameField = new JTextField(20);
+		dateField = new JTextField(10);
+		noteField = new JTextField(70);
+		reminderField = new JTextField(20);
+		
+		dateField.setText("10/10/2012");
+		noteField.setText("Take action NOW!");
+		reminderField.setText("0");
+		
+		isOk = false;
+		isSubOk = true;
+		format = DateFormat.getDateInstance(DateFormat.SHORT);
+		aProject = new Project();
+		
+		WIDTH = 400;
+		HEIGHT = 255;
+		okButton = new JButton("OK");
+		okButton.addActionListener(this); 
+		cancelButton = new JButton("Cancel");
+		cancelButton.addActionListener(this);
+		delete = new JButton("Delete");
+		delete.addActionListener(this);
+		complete = new JButton("Complete");
+		complete.addActionListener(this);
+		sub = new JButton("Split Project");
+		sub.addActionListener(this);
+		nameLabel = new JLabel("Name of Project:");
+		dateLabel = new JLabel("Due date (MM/DD/YYYY):");
+		noteLabel = new JLabel("Notes:");
+		
+		remLabel = new JLabel("Reminder (Days Needed):");
+		
+		if(a != null){
+			nameField.setText(projectName);
+			subField = new JTextField(3);
+			subField.setText(" ");
+			subLabel = new JLabel("Split Project");
+			northPanel.add(nameLabel);
+			northPanel.add(nameField);
+			northPanel.add(subLabel);
+			northPanel.add(subField);
+			subUsed = true;
+		}else{
+			nameField.setText("Math Homework");
+			northPanel.add(nameLabel);
+			northPanel.add(nameField);
+		}
+		
+		northPanel.add(dateLabel);
+		northPanel.add(dateField);
+		northPanel.add(remLabel);
+		northPanel.add(reminderField);
+		northPanel.add(noteLabel);
+		northPanel.add(noteField);
+		
+		centralPanel = new JPanel(new GridLayout(1,2));	
+		verySouthPanel = new JPanel(new GridLayout(1,1));
+		
+		
+		southPanel = new JPanel(new GridLayout(1,1));
+		northPanel.add(cancelButton);
+		northPanel.add(okButton);
+		northPanel.add(delete);
+		northPanel.add(complete);
+		southPanel.add(sub);
 
-		setLayout(layout);
+		
+		
+		add(northPanel, BorderLayout.NORTH);
+		add(southPanel, BorderLayout.SOUTH);
+
 		setSize(WIDTH, HEIGHT);
 		setLocationRelativeTo(null);
 		setVisible(true); 
@@ -240,33 +266,28 @@ public class CreateGUI extends JDialog implements ActionListener {
 						+ "or missing information.", "Input Validation", JOptionPane.ERROR_MESSAGE);
 			}
 			return;
-//			try {
-//				String newName = nameField.getText();
-//				String newDateString = dateField.getText();
-//				int newReminder = getReminder();
-//				String newNote = noteField.getText();
-//				Date newDate = format.parse(newDateString);
-//				GregorianCalendar newDate2 = new GregorianCalendar();
-//				int reminder = Integer.parseInt(reminderField.getText());
-//				newDate2.setTime(newDate);
-//				aProject.setName(newName);
-//				aProject.setDueDate(newDate2);
-//				aProject.setNotes(newNote);
-//				aProject.setReminder(reminder);
-//				aProject.setReminder(newReminder);
-//				isOk = true;
-//				dispose();
-//				int num = Integer.parseInt(subField.getText());
-//				while (num > 0) {
-//					SubCreateGUI subCreate = new SubCreateGUI(this);
-//					if (subCreate.isOkPressed()) {
-//						aProject.addItems(subCreate.whatProject());
-//					}
-//					num--;
-//				}
-//			} catch (Exception x) {
-//				x.printStackTrace();
-//			}
+
+		}
+		if(e.getSource() == delete){
+			if(isValid()){
+				isDeleteOk = true;
+				cancel = false;
+				setVisible(false);
+			}
+		}
+		if(e.getSource() == complete){
+			if (isValidField()){
+				isCompleteOk = true;
+				cancel = false;
+				setVisible(false);
+			}
+		}
+		if(e.getSource() == sub){
+			if (isValidField()){
+				isSubOk = true;
+				cancel = false;
+				setVisible(false);
+			}
 		}
 	}
 	
@@ -280,6 +301,18 @@ public class CreateGUI extends JDialog implements ActionListener {
 	 */
 	public boolean isOkPressed() {
 		return isOk;
+	}
+	
+	public boolean isCompletePressed(){
+		return isCompleteOk;
+	}
+	
+	public boolean isDeletePressed(){
+		return isDeleteOk;
+	}
+	
+	public boolean isSubPressed(){
+		return isSubOk;
 	}
 	
 	public String getName(){
@@ -340,4 +373,5 @@ public class CreateGUI extends JDialog implements ActionListener {
 			subField.setText(null);
 		}
 	}
+
 }
