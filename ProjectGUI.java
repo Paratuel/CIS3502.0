@@ -162,9 +162,10 @@ public class ProjectGUI extends JFrame implements ActionListener {
 	 * Creates a newProject for the program.
 	 */
 	private CreateGUI newProject;
-	private JButton[] projects = new JButton[100];
-	private JLabel[][] labels = new JLabel[100][5];
-	private JButton[] completed = new JButton[100];
+	private JButton[] projects = new JButton[20];
+	private JLabel[][] labels = new JLabel[20][5];
+	private JButton[] completed = new JButton[50];
+	private JLabel[][] completedLabels = new JLabel[50][5];
 	private ArrayList<Project> temp;
 	private int number = 0;
 	private JLabel one, two, three, four, five;
@@ -175,7 +176,7 @@ public class ProjectGUI extends JFrame implements ActionListener {
 	public ProjectGUI() {
 		setupFrame();
 		model = new ProjectModel();
-		model.load(new File("src/package1/file.ser"));
+		//model.load(new File("src/package1/file.ser"));
 	}
 
 	/**
@@ -271,7 +272,7 @@ public class ProjectGUI extends JFrame implements ActionListener {
 	 */
 	public final void actionPerformed(final ActionEvent e) {
 		if (e.getSource() == exitItem) {
-			model.save(new File("src/package1/file.ser"));
+			//model.save(new File("src/package1/file.ser"));
 			System.exit(0);
 		}
 		//		if (e.getSource() == aboutItem) {
@@ -281,13 +282,13 @@ public class ProjectGUI extends JFrame implements ActionListener {
 			newProject = new CreateGUI(this);
 
 			if (newProject.isOkPressed()) {
-				Project p = new Project(newProject.getName(), null, newProject.getDueDate(), 
-						newProject.getReminder(), newProject.getNotes(),  false);
+				//Project p = new Project(newProject.getName(), null, newProject.getDueDate(), 
+				//		newProject.getReminder(), newProject.getNotes(),  false);
 				//				Project p = newProject.whatProject();
-				model.add(p);
+				//model.add(p);
 				addingProject(newProject.getName(), null, newProject.getDueDate(), 
 						newProject.getReminder(), newProject.getNotes());
-				model.sortByName();
+				//model.sortByName();
 			}
 		}
 		
@@ -335,18 +336,7 @@ public class ProjectGUI extends JFrame implements ActionListener {
 			edit(20);
 		}
 		
-		if (e.getSource() == deleteItem) {
-//			int index = table.getSelectedRow();
-//			if (index != -1) {
-//				if (JOptionPane.showConfirmDialog(null, 
-//						"Are you sure you would like to delete this project?"
-//						, null, JOptionPane.OK_CANCEL_OPTION) != 0) {
-//					setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-//				} else {
-//					model.remove(model.get(index));
-//				}
-//			}
-		}
+		
 		
 			//if (e.getSource()) {
 				//if()
@@ -461,79 +451,141 @@ public class ProjectGUI extends JFrame implements ActionListener {
 		}
 
 	}
-	public void addingProject(String n, String s, GregorianCalendar d, 
-			int r, String notes){
-		
-		projects[number] = new JButton();
-		projects[number].setActionCommand(String.valueOf(number));
-		projects[number].addActionListener(this);
-		projects[number].setLayout(new GridLayout(1,5));
-		//now.setSize(5,950);
-		//now.setText("");
-		labels[number][0] = new JLabel(n);
-		labels[number][0].setHorizontalAlignment(SwingConstants.CENTER);
-		labels[number][1] = new JLabel(s);
-		labels[number][1].setHorizontalAlignment(SwingConstants.CENTER);
-		labels[number][2] = new JLabel(Utilities.gToString(d));
-		labels[number][2].setSize(labels[number][2].getPreferredSize());
-		labels[number][2].setHorizontalAlignment(SwingConstants.CENTER);
-		labels[number][3] = new JLabel(String.valueOf(r));
-		labels[number][3].setSize(labels[number][3].getPreferredSize());
-		labels[number][3].setHorizontalAlignment(SwingConstants.CENTER);
-		labels[number][4] = new JLabel(notes);
-		labels[number][4].setHorizontalAlignment(SwingConstants.CENTER);
-		
-		projects[number].add(labels[number][0]);
-		projects[number].add(labels[number][1]);
-		projects[number].add(labels[number][2]);
-		projects[number].add(labels[number][3]);
-		projects[number].add(labels[number][4]);
-		
-		int temp = number;
-		number++;
-		//System.out.println(temp);
-		special.add(projects[temp]);
+	public void addingProject(String n, String s, String d, 
+			String r, String notes){
+		if(number <= 20){
+			projects[number] = new JButton();
+			projects[number].setActionCommand(String.valueOf(number));
+			projects[number].addActionListener(this);
+			projects[number].setLayout(new GridLayout(1,5));
+			//now.setSize(5,950);
+			//now.setText("");
+			labels[number][0] = new JLabel(n);
+			labels[number][0].setHorizontalAlignment(SwingConstants.CENTER);
+			labels[number][1] = new JLabel(s);
+			labels[number][1].setHorizontalAlignment(SwingConstants.CENTER);
+			labels[number][2] = new JLabel(d);
+			labels[number][2].setSize(labels[number][2].getPreferredSize());
+			labels[number][2].setHorizontalAlignment(SwingConstants.CENTER);
+			labels[number][3] = new JLabel(r);
+			labels[number][3].setSize(labels[number][3].getPreferredSize());
+			labels[number][3].setHorizontalAlignment(SwingConstants.CENTER);
+			labels[number][4] = new JLabel(notes);
+			labels[number][4].setHorizontalAlignment(SwingConstants.CENTER);
+
+			projects[number].add(labels[number][0]);
+			projects[number].add(labels[number][1]);
+			projects[number].add(labels[number][2]);
+			projects[number].add(labels[number][3]);
+			projects[number].add(labels[number][4]);
+
+			int temp = number;
+			number++;
+			//System.out.println(temp);
+			special.add(projects[temp]);
+		}else{
+			JOptionPane.showMessageDialog(null, "Get a LIFE dude!");
+		}
 	}
 	
 	public void remove(int i){
-		projects[i] = null;
 		special.remove(projects[i]);
-		//special.invalidate();
+		special.validate();
+		special.repaint();
+		projects[i] = null;
+		for (int x = 0; i < 3; i++){
+			labels[x] = null;
+		}
+		updateProjects(i);
 	}
 
 	public void edit(int i){
-		newProject = new CreateGUI(this, 
-			model.get(i).getName(), 
-			model.get(i).getSubName(),
-			model.get(i).getDueDate(), 
-			model.get(i).getReminder(),
-			model.get(i).getNotes());
-		//model.remove(model.get(index));
+		if(labels[i][1].getText() != null){
+			newProject = new CreateGUI(this, 
+					labels[i][0].getText(),
+					labels[i][1].getText(),
+					labels[i][2].getText(), 
+					labels[i][3].getText(),
+					labels[i][4].getText());
+			//model.remove(model.get(index));
+		}else{
+			newProject = new CreateGUI(this, 
+					labels[i][0].getText(),
+					//labels[i][1].getText(),
+					labels[i][2].getText(), 
+					labels[i][3].getText(),
+					labels[i][4].getText());
+		}
 
 		if (newProject.isOkPressed()) {
-			if(newProject.getName() != model.get(i).getName()){
+			//if(newProject.getName() != model.get(i).getName()){
 				labels[i][0].setText(newProject.getName());
-				model.upDate(model.get(i).getName(), 
-						newProject.getName());
-			}
-			if(newProject.getSub() != model.get(i).getSubName()){
+				//model.upDate(model.get(i).getName(), 
+						//newProject.getName());
+			//}
+			//if(newProject.getSub() != model.get(i).getSubName()){
 				labels[i][1].setText(newProject.getSub());
-				model.get(i).setSubName(newProject.getName());
-			}
-			if(newProject.getDueDate() != model.get(i).getDueDate()){
-				labels[i][2].setText(Utilities.gToString(newProject.getDueDate()));
-				model.get(i).setDueDate(newProject.getDueDate());
-			}
-			if(newProject.getReminder() != model.get(i).getReminder()){
+				//model.get(i).setSubName(newProject.getName());
+			//}
+			//if(newProject.getDueDate() != model.get(i).getDueDate()){
+				labels[i][2].setText(newProject.getDueDate());
+				//model.get(i).setDueDate(newProject.getDueDate());
+			//}
+			//if(newProject.getReminder() != model.get(i).getReminder()){
 				labels[i][3].setText(String.valueOf(newProject.getReminder()));
-				model.get(i).setReminder(newProject.getReminder());
-			}
-			if(newProject.getNotes() != model.get(i).getNotes()){
+				//model.get(i).setReminder(newProject.getReminder());
+			//}
+			//if(newProject.getNotes() != model.get(i).getNotes()){
 				labels[i][4].setText(newProject.getNotes());
-				model.get(i).setNotes(newProject.getNotes());
+				//model.get(i).setNotes(newProject.getNotes());
+			//}
+
+		}
+		if(newProject.isDeletePressed()){
+			remove(i);
+		}
+		if(newProject.isCompletePressed()){
+			for(int x = 0; x < 50; x++){
+				if(completed[x] == null){
+					completed[x] = projects[i];
+					completedLabels[x][0] = labels[x][0];
+					completedLabels[x][1] = labels[x][1];
+					completedLabels[x][2] = labels[x][2];
+				}
+			break;
 			}
+			remove(i);
+		}
+		if(newProject.isSubPressed()){
+			newProject = new CreateGUI(this, 
+					labels[i][0].getText(),
+					labels[i][1].getText(),
+					labels[i][2].getText(), 
+					labels[i][3].getText(),
+					labels[i][4].getText());
+			
+				
+				addingProject(newProject.getName(), newProject.getSub(), newProject.getDueDate(), 
+						newProject.getReminder(), newProject.getNotes());
+				
+			
 
 		}
 	}
 	
+	public void updateProjects(int n){
+		//JButton temp;
+		for(int i = n; i < 20; i++){
+			if(n != 19){
+				projects[n] = projects[n+1];
+				for (int j = 0; j < 3; j++){
+					labels[n][j] = labels[n+1][j];
+				}
+			}
+		}
+		//System.out.println(projects[0]);
+		return;
+	}
+	
+
 }
