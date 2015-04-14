@@ -188,6 +188,13 @@ public class ProjectGUI extends JFrame implements ActionListener {
 		frame = new JFrame();
 		frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		frame.setTitle("Project Management");
+		
+		for(int i = 0; i < projects.length; i++){
+			projects[i] = new JButton();
+			projects[i].setActionCommand(String.valueOf(i));
+			projects[i].addActionListener(this);
+			projects[i].setLayout(new GridLayout(1,5));
+		}
 
 		JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
@@ -256,7 +263,7 @@ public class ProjectGUI extends JFrame implements ActionListener {
 		allButton = new JButton("All Projects");
 		allButton.addActionListener(this);
 
-		dateButton = new JButton("Sort by Name");
+		dateButton = new JButton("Sort by Date");
 		dateButton.addActionListener(this);
 
 		buttonPanel.add(allButton);
@@ -358,10 +365,10 @@ public class ProjectGUI extends JFrame implements ActionListener {
 	public void addingProject(String n, String s, String d, 
 			String r, String notes){
 		if(number <= 20){
-			projects[number] = new JButton();
-			projects[number].setActionCommand(String.valueOf(number));
-			projects[number].addActionListener(this);
-			projects[number].setLayout(new GridLayout(1,5));
+//			projects[number] = new JButton();
+//			projects[number].setActionCommand(String.valueOf(number));
+//			projects[number].addActionListener(this);
+//			projects[number].setLayout(new GridLayout(1,5));
 			//now.setSize(5,950);
 			//now.setText("");
 			labels[number][0] = new JLabel(n);
@@ -397,12 +404,13 @@ public class ProjectGUI extends JFrame implements ActionListener {
 		special.remove(projects[i]);
 		special.validate();
 		special.repaint();
-		projects[i] = null;
-		for (int x = 0; i < 3; i++){
-			labels[x] = null;
-		}
-		number--;
-		updateProjects(i);
+		
+		//for (int x = 0; i < 3; i++){
+			//projects[i].remove(labels[i][x]);
+		//	labels[i][x].setText(null);
+		//}
+		//number--;
+		//updateProjects(i);
 	}
 
 	public void edit(int i){
@@ -476,19 +484,21 @@ public class ProjectGUI extends JFrame implements ActionListener {
 
 		}
 	}
-	public void updateProjects(int n){
-		//JButton temp;
-		for(int i = n; i < 20; i++){
-			if(n != 19){
-				projects[n] = projects[n+1];
-				for (int j = 0; j < 3; j++){
-					labels[n][j] = labels[n+1][j];
-				}
-			}
-		}
-		//System.out.println(projects[0]);
-		return;
-	}
+//	public void updateProjects(int n){
+//		//JButton temp;
+//		for(int i = n; i < number+1; i++){
+//			while(i < 19){
+//				//projects[i] = projects[i+1];
+//				for (int j = 0; j < 3; j++){
+//					if(labels[i+1][j].getText() != null){
+//						labels[i][j].setText(labels[i+1][j].getText());
+//					}
+//				}
+//			}
+//		}
+//		//System.out.println(projects[0]);
+//		return;
+//	}
 	public void sortByName(){
 		//System.out.println("1");
 		for(int j = 0; j < number; j++){
