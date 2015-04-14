@@ -351,7 +351,7 @@ public class ProjectGUI extends JFrame implements ActionListener {
 			sortByName();
 		}
 		if (e.getSource() == dateButton) {
-			
+			sortByDate();
 		}
 
 	}
@@ -489,18 +489,16 @@ public class ProjectGUI extends JFrame implements ActionListener {
 		//System.out.println(projects[0]);
 		return;
 	}
-public void sort(){
+	public void sortByName(){
 		//System.out.println("1");
 		for(int j = 0; j < number; j++){
 			for(int i = j+1; i < number; i++){
-				//If i is less the j
 				if((labels[i][0].getText().toLowerCase().compareTo(
-						labels[j][0].getText().toLowerCase()) < 0) ||
-						//or if i = j and i subName = null
+						labels[j][0].getText().toLowerCase()) < 0) || 
 						(labels[i][0].getText().toLowerCase().compareTo(
 								labels[j][0].getText().toLowerCase()) == 0) && 
 								labels[i][0].getText().toLowerCase() == null){
-				//	System.out.println("i: " + i + " and j: " + j);
+					//System.out.println("i: " + i + " and j: " + j);
 
 					String[][] b = new String[1][5];
 					b[0][0] = labels[j][0].getText();
@@ -523,6 +521,37 @@ public void sort(){
 					//i--;
 				}
 				
+			}
+		}
+	}
+	public void sortByDate(){
+		for(int j = 0; j < number; j++){
+			for(int i = j+1; i < number; i++){
+
+				if(Utilities.beforeAfter(Utilities.strToGregCalendar(labels[j][2].getText()), 
+						Utilities.strToGregCalendar(labels[i][2].getText())) == false){
+					//System.out.println("i: " + i + " and j: " + j);
+
+					String[][] b = new String[1][5];
+					b[0][0] = labels[j][0].getText();
+					b[0][1] = labels[j][1].getText();
+					b[0][2] = labels[j][2].getText();
+					b[0][3] = labels[j][3].getText();
+					b[0][4] = labels[j][4].getText();
+					
+					labels[j][0].setText(labels[i][0].getText());
+					labels[j][1].setText(labels[i][1].getText());
+					labels[j][2].setText(labels[i][2].getText());
+					labels[j][3].setText(labels[i][3].getText());
+					labels[j][4].setText(labels[i][4].getText());
+					
+					labels[i][0].setText(b[0][0]);
+					labels[i][1].setText(b[0][1]);
+					labels[i][2].setText(b[0][2]);
+					labels[i][3].setText(b[0][3]);
+					labels[i][4].setText(b[0][4]);
+					//i--;
+				}
 			}
 		}
 	}
