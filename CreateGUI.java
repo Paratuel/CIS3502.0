@@ -401,7 +401,7 @@ public class CreateGUI extends JDialog implements ActionListener {
 	 * Checking inputs from user
 	 * @return state
 	 */
-	public boolean isValidField(){
+public boolean isValidField(){
 		if(nameField.getText().equals("")){
 			JOptionPane.showMessageDialog(null, "Name Wasn't Entered.", "Input Validation",
 					JOptionPane.ERROR_MESSAGE);
@@ -413,9 +413,20 @@ public class CreateGUI extends JDialog implements ActionListener {
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}
+		GregorianCalendar today = new GregorianCalendar();
+		if(getDueDate().compareTo(today) < 0){
+			JOptionPane.showMessageDialog(null, 
+					"You set the Due Date before today's date.",
+					"Input Validation", JOptionPane.ERROR_MESSAGE);
+		
+			return false;
+			
+		}
+		else if (getDueDate().compareTo(today) == 0){
+			JOptionPane.showMessageDialog(null,"Due date is today");
+		}
 		return true;
 	}
-
 	/**
 	 * Checks which Project
 	 * @return aProject is the Project
