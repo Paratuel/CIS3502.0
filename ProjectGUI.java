@@ -348,7 +348,7 @@ public class ProjectGUI extends JFrame implements ActionListener {
 			model.sortByWeek(4);
 		}
 		if (e.getSource() == allButton) {
-			sort();
+			sortByName();
 		}
 		if (e.getSource() == dateButton) {
 			
