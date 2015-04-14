@@ -40,6 +40,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.GregorianCalendar;
 
 
@@ -166,8 +167,9 @@ public class ProjectGUI extends JFrame implements ActionListener {
 	private JLabel[][] labels = new JLabel[20][5];
 	private JButton[] completed = new JButton[50];
 	private JLabel[][] completedLabels = new JLabel[50][5];
-	private ArrayList<Project> temp;
+	private String[][] temp = new String[1][5];
 	private int number = 0;
+	private int numberComplete = 0;
 	private JLabel one, two, three, four, five;
 
 	/**
@@ -254,7 +256,7 @@ public class ProjectGUI extends JFrame implements ActionListener {
 		allButton = new JButton("All Projects");
 		allButton.addActionListener(this);
 
-		dateButton = new JButton("Sort by Date");
+		dateButton = new JButton("Sort by Name");
 		dateButton.addActionListener(this);
 
 		buttonPanel.add(allButton);
@@ -335,107 +337,9 @@ public class ProjectGUI extends JFrame implements ActionListener {
 		}else if(e.getActionCommand().equals(String.valueOf(20))){
 			edit(20);
 		}
-		
-		
-		
-			//if (e.getSource()) {
-				//if()
 
-//				newProject = new CreateGUI(this, 
-//						model.get(i).getName(), 
-//						model.get(i).getSubName(),
-//						model.get(i).getDueDate(), 
-//						model.get(i).getReminder(),
-//						model.get(i).getNotes());
-				//model.remove(model.get(index));
-
-//				if (newProject.isOkPressed()) {
-//					if(newProject.getName() != model.get(i).getName()){
-//						one.setText(newProject.getName());
-//						model.upDate(model.get(i).getName(), 
-//								newProject.getName());
-//					}
-//					if(newProject.getSub() != model.get(i).getSubName()){
-//						two.setText(newProject.getSub());
-//						model.get(i).setSubName(newProject.getName());
-//					}
-//					if(newProject.getDueDate() != model.get(i).getDueDate()){
-//						three.setText(Utilities.gToString(newProject.getDueDate()));
-//						model.get(i).setDueDate(newProject.getDueDate());
-//					}
-//					if(newProject.getReminder() != model.get(i).getReminder()){
-//						four.setText(String.valueOf(newProject.getReminder()));
-//						model.get(i).setReminder(newProject.getReminder());
-//					}
-//					if(newProject.getNotes() != model.get(i).getNotes()){
-//						five.setText(newProject.getNotes());
-//						model.get(i).setNotes(newProject.getNotes());
-//					}
-					
-//					Project s = new Project(newProject.getName(), 
-//							newProject.getSub(), newProject.getDueDate(), 
-//							newProject.getReminder(), newProject.getNotes(), 
-//							false);
-
-					//model.remove(model.get(i));
-					//remove(i);
-					//model.add(s);
-//					addingProject(newProject.getName(), null, newProject.getDueDate(), 
-//							newProject.getReminder(), newProject.getNotes());
-					//model.sortByName();
-//				}
-//
-//			}
-
-		
-
-		if (e.getSource() == doneItem) {
-			//			if (model.getSize() == 0) {
-			//				JOptionPane.showMessageDialog(null, "No project selected.");
-//			} else {
-//				int index = table.getSelectedRow();
-//				if (index != -1) {
-//					if (model.get(index).getDone() == false) {
-//						if (JOptionPane.showConfirmDialog(null, 
-//								"Have you completed the project?"
-//								, null, JOptionPane.OK_CANCEL_OPTION) != 0) {
-//							setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-//
-//
-//						} else {
-//							model.get(index).setDone(true);
-//						}
-//					} else {
-//						model.get(index).setDone(false);
-//					}
-//				} else {
-//					JOptionPane.showMessageDialog(null, "No project selected.");
-//				}
-//				//model.refresh();
-//			}
-		}
-		
-		if (e.getSource() == subItem) {
-//			int index = table.getSelectedRow();
-//			if (index != -1) {
-//				String name = model.get(index).getName();
-//				newProject = new CreateGUI(this, name);
-//				//subGroup = new SubCreateGUI(this);
-//
-//				if (newProject.isOkPressed()) {
-//					Project p = new Project(newProject.getName(), newProject.getSub(), newProject.getDueDate(), 
-//							newProject.getReminder(), newProject.getNotes(), false);
-//					//Project p = newProject.whatProject();
-//					model.add(p);
-//					model.sortByName();
-//
-//				}
-//			} else {
-//				JOptionPane.showMessageDialog(this, "Please pick a project.");
-//			}
-		}
 		if (e.getSource() == week1Button) {
-			model.sortByWeek(1);
+			
 		}
 		if (e.getSource() == week2Button) {
 			model.sortByWeek(2);
@@ -444,10 +348,10 @@ public class ProjectGUI extends JFrame implements ActionListener {
 			model.sortByWeek(4);
 		}
 		if (e.getSource() == allButton) {
-			model.sortByName();
+			sort();
 		}
 		if (e.getSource() == dateButton) {
-			model.sortByDate();
+			
 		}
 
 	}
@@ -483,6 +387,7 @@ public class ProjectGUI extends JFrame implements ActionListener {
 			number++;
 			//System.out.println(temp);
 			special.add(projects[temp]);
+			
 		}else{
 			JOptionPane.showMessageDialog(null, "Get a LIFE dude!");
 		}
@@ -496,6 +401,7 @@ public class ProjectGUI extends JFrame implements ActionListener {
 		for (int x = 0; i < 3; i++){
 			labels[x] = null;
 		}
+		number--;
 		updateProjects(i);
 	}
 
@@ -544,17 +450,15 @@ public class ProjectGUI extends JFrame implements ActionListener {
 		if(newProject.isDeletePressed()){
 			remove(i);
 		}
-		if(newProject.isCompletePressed()){
-			for(int x = 0; x < 50; x++){
-				if(completed[x] == null){
-					completed[x] = projects[i];
-					completedLabels[x][0] = labels[x][0];
-					completedLabels[x][1] = labels[x][1];
-					completedLabels[x][2] = labels[x][2];
-				}
-			break;
-			}
+		if(newProject.isCompletePressed()){	
+			
+			completed[numberComplete] = projects[i];
+			completedLabels[numberComplete][0] = labels[i][0];
+			completedLabels[numberComplete][1] = labels[i][1];
+			completedLabels[numberComplete][2] = labels[i][2];
+			numberComplete++;
 			remove(i);
+			
 		}
 		if(newProject.isSubPressed()){
 			newProject = new CreateGUI(this, 
@@ -563,16 +467,15 @@ public class ProjectGUI extends JFrame implements ActionListener {
 					labels[i][2].getText(), 
 					labels[i][3].getText(),
 					labels[i][4].getText());
-			
-				
-				addingProject(newProject.getName(), newProject.getSub(), newProject.getDueDate(), 
-						newProject.getReminder(), newProject.getNotes());
-				
-			
+
+
+			addingProject(newProject.getName(), newProject.getSub(), newProject.getDueDate(), 
+					newProject.getReminder(), newProject.getNotes());
+
+
 
 		}
 	}
-	
 	public void updateProjects(int n){
 		//JButton temp;
 		for(int i = n; i < 20; i++){
@@ -586,6 +489,34 @@ public class ProjectGUI extends JFrame implements ActionListener {
 		//System.out.println(projects[0]);
 		return;
 	}
-	
+	public void sort(){
+		System.out.println("1");
+		for(int j = 0; j < number; j++){
+			for(int i = j+1; i < number; i++){
+				if(labels[i][0].getText().compareTo(labels[j][0].getText()) > 0){
+					System.out.println("next");
+
+					String[][] b = new String[1][5];
+					b[0][0] = labels[j][0].getText();
+					b[0][1] = labels[j][1].getText();
+					b[0][2] = labels[j][2].getText();
+					b[0][3] = labels[j][3].getText();
+					b[0][4] = labels[j][4].getText();
+					
+					labels[j][0].setText(labels[i][0].getText());
+					labels[j][1].setText(labels[i][1].getText());
+					labels[j][2].setText(labels[i][2].getText());
+					labels[j][3].setText(labels[i][3].getText());
+					labels[j][4].setText(labels[i][4].getText());
+					
+					labels[i][0].setText(b[0][0]);
+					labels[i][1].setText(b[0][1]);
+					labels[i][2].setText(b[0][2]);
+					labels[i][3].setText(b[0][3]);
+					labels[i][4].setText(b[0][4]);
+				}
+			}
+		}
+	}
 
 }
