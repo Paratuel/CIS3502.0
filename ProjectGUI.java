@@ -489,12 +489,18 @@ public class ProjectGUI extends JFrame implements ActionListener {
 		//System.out.println(projects[0]);
 		return;
 	}
-	public void sort(){
-		System.out.println("1");
+public void sort(){
+		//System.out.println("1");
 		for(int j = 0; j < number; j++){
 			for(int i = j+1; i < number; i++){
-				if(labels[i][0].getText().compareTo(labels[j][0].getText()) > 0){
-					System.out.println("next");
+				//If i is less the j
+				if((labels[i][0].getText().toLowerCase().compareTo(
+						labels[j][0].getText().toLowerCase()) < 0) ||
+						//or if i = j and i subName = null
+						(labels[i][0].getText().toLowerCase().compareTo(
+								labels[j][0].getText().toLowerCase()) == 0) && 
+								labels[i][0].getText().toLowerCase() == null){
+				//	System.out.println("i: " + i + " and j: " + j);
 
 					String[][] b = new String[1][5];
 					b[0][0] = labels[j][0].getText();
@@ -514,9 +520,10 @@ public class ProjectGUI extends JFrame implements ActionListener {
 					labels[i][2].setText(b[0][2]);
 					labels[i][3].setText(b[0][3]);
 					labels[i][4].setText(b[0][4]);
+					//i--;
 				}
+				
 			}
 		}
 	}
-
 }
