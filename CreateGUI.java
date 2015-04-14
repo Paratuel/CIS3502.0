@@ -413,7 +413,26 @@ public class CreateGUI extends JDialog implements ActionListener {
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}
-		return true;
+		
+	
+ 		if(nameField.getText().equals("")){
+ 			JOptionPane.showMessageDialog(null, "Name Wasn't Entered.", "Input Validation",
+ 					JOptionPane.ERROR_MESSAGE);
+ 			}
+ 		}
+-		GregorianCalendar today = new GregorianCalendar();
+-		if(getDueDate().compareTo(today) < 0){
+-			JOptionPane.showMessageDialog(null, 
+-					"You set the Due Date before today's date.",
+-					"Input Validation", JOptionPane.ERROR_MESSAGE);
+-		
+-			return false;
+-			
+-		}
+-		else if (getDueDate().compareTo(today) == 0){
+-			JOptionPane.showMessageDialog(null,"Due date is today");
+-		}
+ 		return true;
 	}
 	/**
 	 * Checks which Project
