@@ -63,6 +63,8 @@ public class CreateGUI extends JDialog implements ActionListener {
 	private boolean isSubOk, subUsed, isCompleteOk, isDeleteOk;
 	private ProjectGUI parent;
 
+	private GregorianCalendar today = new GregorianCalendar();
+
 	private Project aProject;
 
 	/**
@@ -112,9 +114,13 @@ public class CreateGUI extends JDialog implements ActionListener {
 		noteField = new JTextField(70);
 		reminderField = new JTextField(20);
 		
-		dateField.setText("10/10/2012");
-		noteField.setText("Take action NOW!");
-		reminderField.setText("0");
+		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");  
+    formatter.setCalendar(today);
+    String currentDate = formatter.format(today.getTime());
+
+    dateField.setText(currentDate);
+    noteField.setText("");
+    reminderField.setText("0");
 		
 		//isOk = false;
 		//isSubOk = true;
@@ -136,7 +142,7 @@ public class CreateGUI extends JDialog implements ActionListener {
 		noteLabel = new JLabel("Notes:");
 		remLabel = new JLabel("Reminder (Days Needed):");
 
-		nameField.setText("Math Homework");
+		nameField.setText("");
 		northPanel.add(nameLabel);
 		northPanel.add(nameField);
 		northPanel.add(dateLabel);
@@ -324,9 +330,6 @@ public class CreateGUI extends JDialog implements ActionListener {
 				isOk = true;
 				cancel = false;
 				setVisible(false);
-			}else{
-				JOptionPane.showMessageDialog(null, "Some fields are not entered correctly "
-						+ "or missing information.", "Input Validation", JOptionPane.ERROR_MESSAGE);
 			}
 			return;
 
@@ -381,8 +384,8 @@ public class CreateGUI extends JDialog implements ActionListener {
 	public String getName(){
 		return nameField.getText();
 	}
-	public String getDueDate(){
-		return dateField.getText();
+	public GregorianCalendar getDueDate() {
+		return Utilities.strToGregCalendar(dateField.getText());  
 	}
 	public String getNotes(){
 		return noteField.getText();
@@ -401,7 +404,7 @@ public class CreateGUI extends JDialog implements ActionListener {
 	 * Checking inputs from user
 	 * @return state
 	 */
-	public boolean isValidField(){
+	public boolean isValidField() {
 		if(nameField.getText().equals("")){
 			JOptionPane.showMessageDialog(null, "Name Wasn't Entered.", "Input Validation",
 					JOptionPane.ERROR_MESSAGE);
@@ -413,6 +416,24 @@ public class CreateGUI extends JDialog implements ActionListener {
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}
+
+		GregorianCalendar today = new GregorianCalendar();
+		today.set(GregorianCalendar.HOUR_OF_DAY, 0);
+		today.set(GregorianCalendar.MINUTE, 0);
+		today.set(GregorianCalendar.SECOND, 0);
+		today.set(GregorianCalendar.MILLISECOND, 0);
+		GregorianCalendar compare = getDueDate();
+		compare.set(GregorianCalendar.HOUR_OF_DAY, 0);
+		compare.set(GregorianCalendar.MINUTE, 0);
+		compare.set(GregorianCalendar.SECOND, 0);
+		compare.set(GregorianCalendar.MILLISECOND, 0);
+		if(compare.compareTo(today) < 0) {
+			JOptionPane.showMessageDialog(null, 
+					"You set the Due Date before today's date.",
+					"Input Validation", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+
 		return true;
 	}
 
