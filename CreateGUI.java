@@ -148,7 +148,7 @@ public class CreateGUI extends JDialog implements ActionListener {
 		northPanel.add(cancelButton);
 		northPanel.add(okButton);
 		add(northPanel, BorderLayout.NORTH);
-		setSize(400, 200);
+		setSize(400, 175);
 
 		setLocationRelativeTo(null);
 		setVisible(true); 
@@ -209,7 +209,7 @@ public class CreateGUI extends JDialog implements ActionListener {
 		southPanel.add(sub);
 		add(northPanel, BorderLayout.NORTH);
 		add(southPanel, BorderLayout.SOUTH);
-		setSize(400, 255);
+		setSize(400, 225);
 		//subUsed = true;
 
 		setLocationRelativeTo(null);
@@ -234,7 +234,7 @@ public class CreateGUI extends JDialog implements ActionListener {
 		aProject = new Project();
 		
 		WIDTH = 400;
-		HEIGHT = 255;
+		HEIGHT = 225;
 		okButton = new JButton("OK");
 		okButton.addActionListener(this); 
 		cancelButton = new JButton("Cancel");
