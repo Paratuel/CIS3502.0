@@ -42,6 +42,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 
@@ -180,7 +181,9 @@ public class ProjectGUI extends JFrame implements ActionListener {
 		load(new File("src/CIS350/file.ser"));
 		setupFrame();
 		model = new ProjectModel();
-		
+		//special.
+		special.validate();
+		special.repaint();
 		
 	}
 
@@ -397,6 +400,7 @@ public class ProjectGUI extends JFrame implements ActionListener {
 			projects[number].add(labels[number][2]);
 			projects[number].add(labels[number][3]);
 			projects[number].add(labels[number][4]);
+			projects[number].setBackground(setColor(d));
 
 			int temp = number;
 			number++;
@@ -619,5 +623,26 @@ public class ProjectGUI extends JFrame implements ActionListener {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private Color setColor(String d){
+		Color color;
+		GregorianCalendar DueDate = new GregorianCalendar();
+		GregorianCalendar fiveDaysAgo = new GregorianCalendar();
+		GregorianCalendar twoDaysAgo = new GregorianCalendar();
+		DueDate = Utilities.strToGregCalendar(d);
+		fiveDaysAgo.set(Calendar.DAY_OF_MONTH, fiveDaysAgo.get(Calendar.DAY_OF_MONTH) + 5);
+		twoDaysAgo.set(Calendar.DAY_OF_MONTH, twoDaysAgo.get(Calendar.DAY_OF_MONTH) + 2);
+		if (DueDate.compareTo(fiveDaysAgo) > 0){
+			color = Color.GREEN;
+		}
+		else if (DueDate.compareTo(fiveDaysAgo) <= 0 && DueDate.compareTo(twoDaysAgo) > 0){
+			color = Color.YELLOW;
+		}
+		else{
+			color = Color.RED;
+		}
+		return color;
+		
 	}
 }
