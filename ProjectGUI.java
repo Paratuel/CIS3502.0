@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
@@ -176,9 +177,11 @@ public class ProjectGUI extends JFrame implements ActionListener {
 	 * Instantiates the GUI.
 	 */
 	public ProjectGUI() {
+		load(new File("src/CIS350/file.ser"));
 		setupFrame();
 		model = new ProjectModel();
-		//model.load(new File("src/package1/file.ser"));
+		
+		
 	}
 
 	/**
@@ -223,7 +226,12 @@ public class ProjectGUI extends JFrame implements ActionListener {
 		newItem.setFont(new Font(name, style, size));
 		newItem.setHorizontalAlignment(SwingConstants.CENTER);
 		newItem.addActionListener(this);
+		
+		//for (int control = 0; control < projects.length; control++){
+		//	special.add(projects[control]);
+		//}
 		special.add(newItem);
+		
 		
 		scroll = new JScrollPane(special);
 		scroll.setViewportView(special);
@@ -281,7 +289,7 @@ public class ProjectGUI extends JFrame implements ActionListener {
 	 */
 	public final void actionPerformed(final ActionEvent e) {
 		if (e.getSource() == exitItem) {
-			//model.save(new File("src/package1/file.ser"));
+			save(new File("src/CIS350/file.ser"));
 			System.exit(0);
 		}
 		//		if (e.getSource() == aboutItem) {
@@ -425,7 +433,7 @@ public class ProjectGUI extends JFrame implements ActionListener {
 		}else{
 			newProject = new CreateGUI(this, 
 					labels[i][0].getText(),
-					//labels[i][1].getText(),
+					labels[i][1].getText(),
 					labels[i][2].getText(), 
 					labels[i][3].getText(),
 					labels[i][4].getText());
@@ -539,7 +547,7 @@ public class ProjectGUI extends JFrame implements ActionListener {
 			for(int i = j+1; i < number; i++){
 
 				if(Utilities.beforeAfter(Utilities.strToGregCalendar(labels[j][2].getText()), 
-						Utilities.strToGregCalendar(labels[i][2].getText())) == false){
+						Utilities.strToGregCalendar(labels[i][2].getText())) <= 0){
 					//System.out.println("i: " + i + " and j: " + j);
 
 					String[][] b = new String[1][5];
@@ -563,6 +571,53 @@ public class ProjectGUI extends JFrame implements ActionListener {
 					//i--;
 				}
 			}
+		}
+	}
+	private void save(File file){
+		try {
+				FileOutputStream fos = new FileOutputStream(file);
+				BufferedOutputStream bos = new BufferedOutputStream(fos);
+				ObjectOutputStream oos = new ObjectOutputStream(bos);
+				oos.writeObject(projects);
+				oos.writeInt(0);
+				oos.writeObject(labels);
+				oos.writeInt(0);
+				oos.writeObject(completed);
+				oos.writeInt(0);
+				oos.writeObject(completedLabels);
+				oos.writeInt(0);
+				oos.writeObject(temp);
+				oos.writeInt(0);
+				oos.close();
+				bos.close();
+				fos.close();
+			} catch (final Exception e) {
+				e.printStackTrace();
+			}
+		}
+	
+	private void load(File file){
+		try {
+			FileInputStream fis = new FileInputStream(file);
+			BufferedInputStream bis = new BufferedInputStream(fis);
+			ObjectInputStream ois = new ObjectInputStream(bis);
+			projects = (JButton[]) ois.readObject();
+			ois.readInt();
+			labels = (JLabel[][]) ois.readObject();
+			ois.readInt();
+			completed = (JButton[]) ois.readObject();
+			ois.readInt();
+			completedLabels = (JLabel[][]) ois.readObject();
+			ois.readInt();
+			temp = (String[][]) ois.readObject();
+			ois.close();
+			bis.close();
+			fis.close();
+			//fireTableRowsInserted(myArray.size() - 1, myArray.size() - 1);
+		} catch (FileNotFoundException f) {
+			save(file);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 }
